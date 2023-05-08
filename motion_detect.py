@@ -1,7 +1,6 @@
 import cv2
-import numpy as np
-import Email_sand
-
+import numpy as np, video_cap
+import threading
 
 def imgConnect(a, b, c, d):
     img = np.hstack((a, b))
@@ -24,7 +23,7 @@ if cap.isOpened():
     while ret:
         print(motionnum)
         if motionnum >= 30:
-            Email_sand.sand_Email('test')
+            video_cap.video_cap()
             motionnum = 0
         ret, c = cap.read()
         draw = c.copy()
