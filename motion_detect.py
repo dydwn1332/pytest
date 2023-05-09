@@ -2,7 +2,7 @@ import cv2
 import numpy as np, video_cap
 import threading
 
-def imgConnect(a, b, c, d):
+def img_Connect(a, b, c, d):
     img = np.hstack((a, b))
     img2 = np.hstack((c, d))
     result = np.vstack((img, img2))
@@ -61,7 +61,7 @@ if cap.isOpened():
                         cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 0, 255))
             motionnum += 1
 
-        totalimg = imgConnect(draw, cv2.cvtColor(diff, cv2.COLOR_GRAY2BGR), cv2.cvtColor(absimg, cv2.COLOR_GRAY2BGR),
+        totalimg = img_Connect(draw, cv2.cvtColor(diff, cv2.COLOR_GRAY2BGR), cv2.cvtColor(absimg, cv2.COLOR_GRAY2BGR),
                               cv2.cvtColor(andimg, cv2.COLOR_GRAY2BGR))
         # 초반에 저장해둔 카메라 영상과
         # 모폴로지 연산이 끝난 diff를 3차원 이미지로 변경후 병합
