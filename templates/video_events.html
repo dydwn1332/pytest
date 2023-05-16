@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>동영상 파일 리스트</title>
+    <style>
+      #video-container {
+        display: flex;
+      }
+      #video-list {
+        width: 30%;
+        padding: 10px;
+      }
+      #video-player {
+        width: 70%;
+        padding: 10px;
+      }
+      table {
+        width: 100%;
+      }
+      table td {
+        padding: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="video-container">
+      <div id="video-list"></div>
+      <div id="video-player"></div>
+    </div>
+
+    <script>
+      var directoryPath = "../video/";
+      var videoExtensions = [".mp4", ".avi", ".mov", ".mkv"];
+
+      // 동영상 파일 리스트를 가져와서 HTML 테이블로 생성
+      function createVideoList() {
+        var videoListElement = document.getElementById("video-list");
+        var videoPlayerElement = document.getElementById("video-player");
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", directoryPath);
+        xhr.onreadystatechange = function () {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            var fileList = xhr.responseText.split("\n");
+
+            var table = document.createElement("table");
+
+            fileList.forEach(function (file) {
+              var extension = file
+                .substring(file.lastIndexOf("."))
+                .toLowerCase();
+
+              if (videoExtensions.indexOf(extension) !== -1) {
+                var row = table.insertRow();
+
+                var cell = row.insertCell();
+                cell.textContent = file;
+                cell.onclick = function () {
+                  var videoUrl = directoryPath + file;
+                  videoPlayerElement.innerHTML =
+                    '<video controls><source src="' +
+                    videoUrl +
+                    '" type="video/mp4"></video>';
+                };
+              }
+            });
+
+            videoListElement.appendChild(table);
+          }
+        };
+        xhr.send();
+      }
+
+      // 페이지 로드 시 동영상 파일 리스트 생성
+      window.onload = function () {
+        createVideoList();
+      };
+    </script>
+  </body>
+</html>
