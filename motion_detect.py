@@ -1,6 +1,7 @@
 import cv2
 import numpy as np, video_cap
 import threading
+import time
 
 def img_Connect(a, b, c, d):
     img = np.hstack((a, b))
@@ -13,9 +14,8 @@ thresh = 25  # threshold이진화 기준값
 max_diff = 5
 motionnum = 0
 title_num = 0
+last_time = None
 cap = cv2.VideoCapture(0)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 800)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 450)
 
 if cap.isOpened():
     ret, a = cap.read()
@@ -23,12 +23,17 @@ if cap.isOpened():
     while ret:
         print(motionnum)
         if motionnum >= 30:
-            video_cap.video_cap()
+            if last_time != None and time.time() - last_time < 10:
+                print("10초가 지나지 않았습니다.")
+            else:
+                last_time = time.time()
+                t1 = threading.Thread(target=video_cap.video_cap)
+                t1.start()
             motionnum = 0
         ret, c = cap.read()
-        draw = c.copy()
         if ret == False:
             break
+        draw = c.copy()
 
         a_gray = cv2.cvtColor(a, cv2.COLOR_BGR2GRAY)  # 변화된 위치를 알기위해 그레이 스케일로 변경
         b_gray = cv2.cvtColor(b, cv2.COLOR_BGR2GRAY)

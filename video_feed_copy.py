@@ -20,17 +20,17 @@ def video_feed():
         ret, a = cap.read()
         ret, b = cap.read()
         while ret:
-            # if motionNum >= 30:
-            #     if last_time != None and time.time() - last_time <= 30:
-            #         print("30초가 지나지 않았습니다.", end=" ")
-            #         print("%d 초 경과" % int(time.time() - last_time))
+            if motionNum >= 30:
+                if last_time != None and time.time() - last_time <= 30:
+                    print("30초가 지나지 않았습니다.", end=" ")
+                    print("%d 초 경과" % int(time.time() - last_time))
 
-            #     else:
-            #         last_time = time.time()
-            #         print("움직임이 감지되어 10초간 영상 저장이 시작됩니다...")
-            #         t1 = threading.Thread(target=video_cap.video_cap)
-            #         t1.start()
-            #     motionNum = 0
+                else:
+                    last_time = time.time()
+                    print("움직임이 감지되어 10초간 영상 저장이 시작됩니다...")
+                    t1 = threading.Thread(target=video_cap.video_cap)
+                    t1.start()
+                motionNum = 0
             ret, c = cap.read()
             if ret == False:
                 return
@@ -71,9 +71,5 @@ def video_feed():
 
                 cv2.putText(draw, "Motion detected", (10, 30),
                             cv2.FONT_HERSHEY_DUPLEX, 0.5, (0, 0, 255))
-            ret, buffer = cv2.imencode('.jpg', draw)
-            frame = buffer.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
             a = b
             b = c

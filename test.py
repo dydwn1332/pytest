@@ -1,5 +1,3 @@
-import test2
+import time
 
-a = test2.Person('John', 13)
-
-a.printstr()
+print(time.strftime("%Y-%m-%d %X", time.localtime(time.time())))
